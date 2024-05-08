@@ -1,0 +1,21 @@
+.react-input-emoji--container{
+    font-size:0px;
+    border-color: red;
+}
+
+.element.style{
+    font-size:0px;
+    border-color: red;
+    border: 5px solid red;
+}
+
+/* style.css */
+
+.react-input-emoji--container {
+    border-radius: 10px;
+    border-color: blue;
+    font-size: 20px;
+    font-family: Arial;
+    background: lightgray;
+    color: white;
+} 

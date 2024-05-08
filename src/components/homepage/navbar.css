@@ -1,0 +1,11 @@
+.ant-menu-item {
+    font-size: 30px; /* veya istediğiniz boyutu girin */
+    line-height: 40px;
+    padding: 50px 24px;
+    /*height: auto; */
+}
+
+.ant-menu-item-icon svg {
+    width: 3em; /* veya istediğiniz boyut */
+    height: 3em; /* veya istediğiniz boyut */
+}
