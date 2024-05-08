@@ -157,7 +157,7 @@ const Chat = () => {
       const sendMessage = async (mesaj) => {
         try {
          if (connection) { // connection değişkeni tanımlıysa işlemi gerçekleştir
-            await connection.("SendMessage", mesaj);
+            await connection.invoke("SendMessage", mesaj);
         } else {
             console.log("Bağlantı henüz kurulmadı.");
         }
