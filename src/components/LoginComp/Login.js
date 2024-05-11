@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import { Link } from 'react-router-dom'; 
@@ -6,7 +6,9 @@ import "./style.css";
 import FormItem from 'antd/es/form/FormItem';
 import { Typography } from 'antd';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import Password from 'antd/es/input/Password';
+import Cookies from 'js-cookie';
 const { Title } = Typography;
 
 const Login = () => {
@@ -14,10 +16,10 @@ const Login = () => {
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
 
-    
+
 
     let customResponse={
-      Username:values.username,
+      Username:values.username,   
       Password:values.password
     }
     console.log("parametrelim")//
@@ -26,6 +28,8 @@ const Login = () => {
     axios.post('http://localhost:5016/api/baytech/SignIn',customResponse)
     .then(function (response) {
       console.log(response);
+      let abc =Cookies.get("SomeCookie")
+      console.log(abc)
     })
     .catch(function (error) {
       console.log(error);

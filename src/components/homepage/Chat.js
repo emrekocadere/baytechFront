@@ -94,6 +94,7 @@ import { BellOutlined, PhoneOutlined, VideoCameraOutlined, MoreOutlined, PaperCl
 import InputEmoji from "react-input-emoji";
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 import "./style.css";
 
@@ -106,11 +107,11 @@ const Chat = () => {
     const [chatroom, setChatroom] = useState();
 
     const [inputValue, setInputValue] = useState('');
-    const [currentMeesage, setCurrentMeesage] = useState('');
+
     const messagesContainerRef = useRef(null);
     const [connection, setConnection] = useState();
    const [messages, setMessages] = useState([]);
-   const [mesaj, setMesaj] = useState([]);
+   //const [mesaj, setMesaj] = useState([]);
    
     const [users, setUsers] = useState([]);
   
@@ -129,6 +130,7 @@ const Chat = () => {
 
           connection.on("ReceiveMessage", (user, message) => {
             setMessages(messages => [...messages, { user, message }]);
+            console.log(message)
             //gelen mesajlar
     
           });
@@ -154,10 +156,11 @@ const Chat = () => {
         }
       }
     
-      const sendMessage = async (mesaj) => {
+      const sendMessage = async (mesajj) => {
         try {
          if (connection) { // connection değişkeni tanımlıysa işlemi gerçekleştir
-            await connection.invoke("SendMessage", mesaj);
+          console.log("hey hey")
+            await connection.invoke("SendMessage", mesajj);
         } else {
             console.log("Bağlantı henüz kurulmadı.");
         }
@@ -182,9 +185,9 @@ const Chat = () => {
 
     const handleOnEnter = (text) => {
             if (text.trim() !== '') {
-                setMesaj([...mesaj, text]);
+                //setMesaj([...mesaj, text]);
                 setInputValue('');
-                onFinish({ mesaj: text }); // onFinish fonksiyonunu çağırarak değeri iletebilirsin.
+                //onFinish({ mesaj: text }); // onFinish fonksiyonunu çağırarak değeri iletebilirsin.
                 sendMessage(text)
   
             }
@@ -192,17 +195,29 @@ const Chat = () => {
 
 
         const onFinish = (values) => {
-            console.log('Success:', values.mesaj);
-            setCurrentMeesage(values.mesaj);
+           // console.log('Success:', values.mesaj);
+
          
         };
 
         useEffect(() => {
             messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-        }, [mesaj]);
+        }, [messages]);
 
         useEffect(() => {
           joinRoom(Cookies.get("Id"), "team44");
+          // // let Request={
+          // //   Id:2
+          // // }
+    //       axios.post('http://localhost:5016/api/baytech/Chat',Request)
+    // .then(function (response) {
+    //   console.log(response);
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+      
+    // });
+
       }, []);
 
         return (
@@ -276,4 +291,3 @@ const Chat = () => {
     };
 
     export default Chat;
-

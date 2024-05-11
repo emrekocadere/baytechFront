@@ -4,19 +4,23 @@ import { Input, Space } from 'antd';
 import { AudioOutlined } from '@ant-design/icons';
 import VirtualList from 'rc-virtual-list';
 import axios from 'axios';
+import { Badge } from 'antd';
+import Cookies from 'js-cookie';
 const { Search } = Input;
 const fakeDataUrl =
     'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo';// rup içinde bir url
 const ContainerHeight = 400;
 const DashPeople = () => {
-    const [data, setData] = useState([]);
-    const appendData = () => {
-        fetch(fakeDataUrl)
-            .then((res) => res.json())
-            .then((body) => {
-                setData(data.concat(body.results));
-            });
-    };
+    const [friendsData, setFriendsData] = useState([]);
+    const [groupsData, setGroupsData] = useState([]);
+    const [userId, setUserId] = useState([]);
+    // const appendData = () => {
+    //     fetch(fakeDataUrl)
+    //         .then((res) => res.json())
+    //         .then((body) => {
+    //             setData(data.concat(body.results));
+    //         });
+    // };
     // useEffect(() => {
     //     appendData();
     // }, []);
@@ -26,19 +30,40 @@ const DashPeople = () => {
     //         appendData();
     //     }
     // };
-    let request = {
-        Id: 1
-      }
-    useEffect(() => {
+    
+
+    let friends;
+    let groups;
+
+        useEffect(() => {
+        let request = { 
+            Id: Cookies.get("Id")
+          }
         axios.post('http://localhost:5016/api/baytech/ReturnFriends',request)
     .then(function (response) {
       console.log(response);
-      setData()
+        friends=response.data
+        console.log(friends)
+        setFriendsData(response.data)
     })
     .catch(function (error) {
       console.log(error);
       message.error("Username or password is incorrect!");
     });
+
+    axios.post('http://localhost:5016/api/baytech/ReturnGroups',request)
+    .then(function (response) {
+      console.log(response);
+      groups=response.data
+        console.log(groups)
+        setGroupsData(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+      message.error("Username or password is incorrect!");
+    });
+
+    
       }, []);
 
     const gridConfig = {
@@ -61,7 +86,7 @@ const DashPeople = () => {
                 <List style={{ padding: "1.2vw", background: "white",borderRadius:"2vw",marginBottom:"1vw"}} >
                     <h3>Chats</h3>
                     <VirtualList
-                        data={data}
+                        data={friendsData}
                         height="13vw"
                         itemHeight={47}
                         itemKey="email"
@@ -71,11 +96,11 @@ const DashPeople = () => {
                         {(item) => (
                             <List.Item key={item.email} >
                                 <List.Item.Meta
-                                    avatar={<Avatar src={item.picture.large} />}
-                                    title={<a href="https://ant.design">{item.name.last}</a>}
+                                     avatar={<Avatar src={item.picture} />}
+                                     title={<a href="https://ant.design">{item.userName}</a>}
                                     description={item.email}
                                 />
-                                <div>Content</div>
+                                  <div><Badge status="success" text="Success" /></div>
                             </List.Item>
                         )}
                     </VirtualList>
@@ -84,9 +109,9 @@ const DashPeople = () => {
 
 
                 <List style={{ padding: "1.2vw", background: "white",borderRadius:"2vw"}} >
-                    <h3>Chats</h3>
+                    <h3>Groups</h3>
                     <VirtualList
-                        data={data}
+                        data={groupsData}
                         height="13vw"
                         itemHeight={47}
                         itemKey="email"
@@ -96,11 +121,11 @@ const DashPeople = () => {
                         {(item) => (
                             <List.Item key={item.email} >
                                 <List.Item.Meta
-                                    avatar={<Avatar src={item.picture.large} />}
-                                    title={<a href="https://ant.design">{item.name.last}</a>}
+                                     avatar={<Avatar src={item.picture} />}
+                                    title={<a href="https://ant.design">{item.name}</a>}
                                     description={item.email}
                                 />
-                                <div>Content</div>
+                              
                             </List.Item>
                         )}
                     </VirtualList>
