@@ -8,7 +8,8 @@ import { Typography } from 'antd';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import Password from 'antd/es/input/Password';
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
+import Cookies from 'universal-cookie';
 const { Title } = Typography;
 
 const Login = () => {
@@ -16,20 +17,23 @@ const Login = () => {
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
 
+    const cookies = new Cookies();
 
 
-    let customResponse={
+
+    let customReq={
       Username:values.username,   
       Password:values.password
     }
-    console.log("parametrelim")//
-    console.log(customResponse)//
 
-    axios.post('http://localhost:5016/api/baytech/SignIn',customResponse)
+
+    axios.post('http://localhost:5016/api/baytech/SignIn',customReq)
     .then(function (response) {
-      console.log(response);
-      let abc =Cookies.get("SomeCookie")
-      console.log(abc)
+      cookies.set('Id', response.data.id, { path: '/' });
+      cookies.set('Email', response.data.email, { path: '/' });
+      cookies.set('Username', response.data.userName, { path: '/' });
+      
+ 
     })
     .catch(function (error) {
       console.log(error);
@@ -37,6 +41,7 @@ const Login = () => {
     });
 
   };
+
   return (
     <div style={{ background: "white", padding: "5vw", borderRadius: "3vw" }}>
       <Title style={{ color: "#6e00ff", display: "flex", justifyContent: "center" }}>Login</Title>
