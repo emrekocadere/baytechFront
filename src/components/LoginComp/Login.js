@@ -32,8 +32,8 @@ const Login = () => {
       cookies.set('Id', response.data.id, { path: '/' });
       cookies.set('Email', response.data.email, { path: '/' });
       cookies.set('Username', response.data.userName, { path: '/' });
-      
- 
+      cookies.set('PhotoUrl', response.data.photoUrl, { path: '/' });
+      console.log(response)
     })
     .catch(function (error) {
       console.log(error);
