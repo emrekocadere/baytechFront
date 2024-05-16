@@ -13,7 +13,7 @@ const Profile = (props) => {
 
      const cookies = new Cookies();
     return(
-        <div style={{display:"inline-block", background:"white",  border: "1vh solid white", borderRadius: "5vh", width:"30vw",height:"100vh"}}>
+        <div style={{display:"inline-block", background:"white",  border: "1vh solid white", borderRadius: "5vh", width:"30vw",height:"94vh"}}>
         
         <div style={{ display: "flex", flexDirection: "column",justifyContent:"center", alignItems:"center",height:"27vh"}}>
             <Avatar src={res5} style={{height:"20vh", width:"10vw"}}/>

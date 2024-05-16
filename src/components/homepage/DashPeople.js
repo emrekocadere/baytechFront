@@ -97,92 +97,179 @@ const handleChange = (newValue) => {
       onSelection(value, value2);
     }
     
-    return (
-        <div style={{ width:"30vw"}} >
+//     return (
+//         <div style={{ backgroundColor:"blue", width:"30vw", height:"100vh", display: "flex", flexDirection: "column", justifyContent: "space-between" }} >
 
+//      <div>      
+// <Select
+//  showSearch
+//  value={value}
+//  placeholder="{props.placeholder}"
+//  style={{width: "25vw"}}
+//  defaultActiveFirstOption={false}
+//  suffixIcon={null}
+//  filterOption={false}
+//  onSearch={handleSearch}
+//  onChange={handleChange}
+//  notFoundContent={null}
+//       options={(data || []).map((d) => ({
+//         label: d.label,
+//         value: d.value,
+//       }))}
+//       onSelect={handleOnSelected}
+//     />
            
-<Select
- showSearch
- value={value}
- placeholder="{props.placeholder}"
- style={{width: "25vw"}}
- defaultActiveFirstOption={false}
- suffixIcon={null}
- filterOption={false}
- onSearch={handleSearch}
- onChange={handleChange}
- notFoundContent={null}
-      options={(data || []).map((d) => ({
-        label: d.label,
-        value: d.value,
-      }))}
-      onSelect={handleOnSelected}
-    />
-           
-            <div >
-                <List style={{ padding: "1.2vw", background: "white",borderRadius:"2vw",marginBottom:"1vw"}} >
-                    <h3>Chats</h3>
-                    <VirtualList
-                        data={friendsData}
-                        height="13vw"
-                        itemHeight={47}
-                        itemKey="Id"
-                        //onScroll={onScroll}
+//             <div style={{ backgroundColor: "red", justifyContent: "center"}}>
+//                 <List style={{ padding: "1.2vw", background: "white",borderRadius:"2vw",marginBottom:"1vw"}} >
+//                     <h3>Chats</h3>
+//                     <VirtualList
+//                         data={friendsData}
+//                         height="13vw"
+//                         itemHeight={47}
+//                         itemKey="Id"
+//                         //onScroll={onScroll}
                         
-                    >
-                        {(item) => (
-                          <Button type="text" style={{height:"4vw"}}>
+//                     >
+//                         {(item) => (
+//                           <Button type="text" style={{height:"4vw"}}>
 
                          
-                            <List.Item key={item.Id} >
-                                <List.Item.Meta
-                                     avatar={<Avatar src={item.picture} />}
-                                     title={<a href="https://ant.design">{item.userName}</a>}
-                                    description={item.email}
-                                />
-                                  <div><Badge status="success" text="Success" /></div>
-                            </List.Item>
-                            </Button>
-                        )}
-                    </VirtualList>
-                </List>
-
-
-
-                <List style={{ padding: "1.2vw", background: "white",borderRadius:"2vw"}} >
-                    <h3>Groups</h3>
-                    <VirtualList
-                        data={groupsData}
-                        height="13vw"
-                        itemHeight={47}
-                        itemKey="email"
-                       // onScroll={onScroll}
+//                             <List.Item key={item.Id} >
+//                                 <List.Item.Meta
+//                                      avatar={<Avatar src={item.picture} />}
+//                                      title={<a href="https://ant.design">{item.userName}</a>}
+//                                     description={item.email}
+//                                 />
+//                                   <div><Badge status="success" text="Success" /></div>
+//                             </List.Item>
+//                             </Button>
+//                         )}
+//                     </VirtualList>
+//                 </List>
+//                 </div></div>
+//                 <div style={{ flex: 1 }}></div>
+//                 <div>
+//                 <List style={{ padding: "1.2vw", background: "white",borderRadius:"2vw"}} >
+//                     <h3>Groups</h3>
+//                     <VirtualList
+//                         data={groupsData}
+//                         height="13vw"
+//                         itemHeight={47}
+//                         itemKey="email"
+//                        // onScroll={onScroll}
                         
-                    >
-                        {(item) => (
-                               <Button type="text" style={{height:"4vw"}}>
-                            <List.Item key={item.email} >
-                                <List.Item.Meta
-                                     avatar={<Avatar src={item.picture} />}
-                                    title={<a href="https://ant.design">{item.name}</a>}
-                                    description={item.email}
-                                />
+//                     >
+//                         {(item) => (
+//                                <Button type="text" style={{height:"4vw"}}>
+//                             <List.Item key={item.email} >
+//                                 <List.Item.Meta
+//                                      avatar={<Avatar src={item.picture} />}
+//                                     title={<a href="https://ant.design">{item.name}</a>}
+//                                     description={item.email}
+//                                 />
                               
-                            </List.Item>
-                            </Button>
-                        )}
-                    </VirtualList>
-                </List> 
-            </div>
+//                             </List.Item>
+//                             </Button>
+//                         )}
+//                     </VirtualList>
+//                 </List> 
+//             </div>
 
 
              
 
 
 
-        </div>
+//         </div>
 
 
-    );
+//     );
+
+
+return (
+  <div style={{  width: "30vw", height: "96vh", display: "flex", flexDirection: "column", justifyContent: "space-between", marginTop: "2vh", marginBottom: "2vh" }} >
+    
+    {/* Select marginBottom: "auto" */}
+    <div style={{  }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Select
+          showSearch
+          value={value}
+          placeholder="{props.placeholder}"
+          style={{ width: "30vw", borderRadius: "6vw !important", height: "6vh"}}
+          defaultActiveFirstOption={false}
+          suffixIcon={null}
+          filterOption={false}
+          onSearch={handleSearch}
+          onChange={handleChange}
+          notFoundContent={null}
+          options={(data || []).map((d) => ({
+            label: d.label,
+            value: d.value,
+          }))}
+          onSelect={handleOnSelected}
+        />
+      </div>
+    </div>
+
+    {/* Üstteki liste marginBottom: "1vw"*/}
+    <div>
+      <div style={{   }}>
+        <List style={{ padding: "1.2vw", background: "white", borderRadius: "2vw" }} >
+          <h3>Chats</h3>
+          <VirtualList
+            data={friendsData}
+            height="13vw"
+            itemHeight={47}
+            itemKey="Id"
+          >
+            {(item) => (
+              <Button type="text" style={{ height: "4vw" }}>
+                <List.Item key={item.Id} >
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.picture} />}
+                    title={<a href="https://ant.design">{item.userName}</a>}
+                    description={item.email}
+                  />
+                  <div><Badge status="success" text="Success" /></div>
+                </List.Item>
+              </Button>
+            )}
+          </VirtualList>
+        </List>
+      </div>
+    </div>
+
+    {/* Altta liste */}
+    <div>
+      <div style={{  }}>
+        <List style={{ padding: "1.2vw", background: "white", borderRadius: "2vw" }} >
+          <h3>Groups</h3>
+          <VirtualList
+            data={groupsData}
+            height="13vw"
+            itemHeight={47}
+            itemKey="email"
+          >
+            {(item) => (
+              <Button type="text" style={{ height: "4vw" }}>
+                <List.Item key={item.email} >
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.picture} />}
+                    title={<a href="https://ant.design">{item.name}</a>}
+                    description={item.email}
+                  />
+                </List.Item>
+              </Button>
+            )}
+          </VirtualList>
+        </List>
+      </div>
+    </div>
+
+  </div>
+);
+
+
 };
 export default DashPeople;

@@ -78,7 +78,8 @@ const Navbar = ({ onItemClick }) => {
       onOpenChange={keys => setOpenKeys(keys)}
       style={{
         width: "7vw",
-        height: "100vh",
+        height: "96vh",
+        marginTop: "2vh", marginBottom: "2vh",
         background: "#6e00ff",
         borderRadius: "2vh",
       }}

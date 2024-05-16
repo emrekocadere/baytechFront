@@ -262,7 +262,8 @@ let [geminiResponse, setgeminiResponse] = useState([]);
   }, []);
 
   return (
-    <div style={{ position: 'relative', minHeight: '92vh', padding: "1.2vw", background: "white", borderRadius: "2vw", marginBottom: "1vw", backgroundColor: "lightseagreen" }}>
+    <div style={{ height: '96vh', overflowY: 'auto', marginTop: "2vh", marginBottom: "2vh" }}>
+    <div style={{ position: 'relative', minHeight: 'calc(96vh - 2.4vw)', padding: "1.2vw", background: "white", borderRadius: "2vw", backgroundColor: "lightseagreen" }}>
       {/* Profil ve Butonlar - position:fixed*/}
       <div style={{
         position: 'relative', top: 0, left: 0, right: 0, background: '#fff', padding: '10px', display: 'flex',
@@ -283,7 +284,7 @@ let [geminiResponse, setgeminiResponse] = useState([]);
         </div>
       </div>
 
-      {/* Mesajlar */}
+      {/* Mesajlar margintop, background, maxwidth*/}
       <div style={{ marginTop: '15px', marginBottom: '0px', overflowY: 'auto', maxHeight: '75vh' }} ref={messagesContainerRef}>
         {messages.map((messages, index) => (
           <div key={index} style={{
@@ -296,9 +297,10 @@ let [geminiResponse, setgeminiResponse] = useState([]);
       {/* Input (position absolute- relative karmaşası padding: '10px',paddingTop:'0px',)*/}
       <div style={{
         position: 'absolute', bottom: 0, left: 0, right: 0, padding: '10px', background: '#fff', display: 'flex',
-        justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #ddd', backgroundColor: "saddlebrown"
+        justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid lightseagreen', backgroundColor: "lightseagreen", borderBottomLeftRadius: '2vw', borderBottomRightRadius: '2vw'
       }}>
-        <Form style={{ maxHeight: "12vh" }}>
+        <Form style={{ maxHeight: "12vh", width: '100%' }}>
+        <div style={{ margin: '0 auto', width: 'calc(100% - 20px)' }}>
           <Input
 
             size="large"
@@ -306,7 +308,7 @@ let [geminiResponse, setgeminiResponse] = useState([]);
             value={inputValue}
             onChange={(e) => handleInputChange(e.target.value)}
             onPressEnter={() => handleOnEnter(inputValue)}
-            style={{ width: 'calc(100% + 530px)', maxHeight: "12vh" }}
+            style={{ width: '100%', maxHeight: "12vh" }}
             prefix={<Button type='text'><PaperClipOutlined /></Button>}
             suffix={
               <div>
@@ -331,8 +333,10 @@ let [geminiResponse, setgeminiResponse] = useState([]);
               </div>
             }
           />
+          </div>
         </Form>
       </div>
+    </div>
     </div>
   );
 };
