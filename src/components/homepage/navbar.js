@@ -2,73 +2,48 @@ import React, { useState } from 'react';
 import { AppstoreOutlined, MailOutlined, SettingOutlined, MessageOutlined, PhoneOutlined, UsergroupAddOutlined, LoginOutlined } from '@ant-design/icons';
 import PriflePhoto from "../SidebarComp/ellipse-1.png"
 import { Button, Menu } from 'antd';
+import Cookies from 'universal-cookie';
 import './navbar.css';
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
-// function getItem(label, key, icon, children, type) {
-//   return {
-//     key,
-//     icon,
-//     children,
-//     label,
-//     type,
-//     style: {
-
-//     }
-//   };
-// }
-
-// const items = [
-//   getItem(<img style={{ width: '3.0vw', objectFit: "cover", }} src={PriflePhoto} />, 'Profile'),
-//   getItem('', 'Message', <Link to={"/homepage"}><MessageOutlined style={{ color: "white" }} /></Link>),
-//   getItem('', 'Calls', <Link><PhoneOutlined style={{ color: "white" }} /></Link>),
-//   getItem('', 'Groups', <UsergroupAddOutlined style={{ color: "white" }} />),
-//   getItem('', 'Settings', <Link to={"/settings"}><SettingOutlined style={{ color: "white" }} /></Link>),
-//   getItem('', 'Exit', <LoginOutlined style={{ color: "white" }} />),
-
-// ];
-
-// // submenu keys of first level
-// const rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
-// const Navbar = () => {
-//   const [openKeys, setOpenKeys] = useState(['sub1']);
-//   const onOpenChange = (keys) => {
-//     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
-//     if (latestOpenKey && rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-//       setOpenKeys(keys);
-//     } else {
-//       setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
-//     }
-//   };
-//   return (
-
-//       <Menu
-//         mode="inline"
-//         openKeys={openKeys}
-//         onOpenChange={onOpenChange}
-//         style={{
-//           width:"7vw",
-//           height: "100vh",
-//           background: "#6e00ff",
-//           borderRadius: "2vh",
-
-
-//         }}
-//         items={items}
-
-//       />
- 
-
-//   );
-// };
-// export default Navbar;
-
-// Navbar.js
 const Navbar = ({ onItemClick }) => {
+
   const [openKeys, setOpenKeys] = useState(['sub1']);
+  const navigate = useNavigate();
 
   const handleItemClick = (key) => {
     onItemClick(key);
+  };
+
+
+  const onClick = () => {
+    const cookies = new Cookies();
+  
+      let req={
+        Id:cookies.get("Id")
+      }
+
+    axios.post('http://localhost:5016/api/Baytech/exit',req)
+    .then(function (response) {
+      if(response.status==200)
+        {
+          navigate("/register");
+        }
+
+    })
+    .catch(function (error) {
+      console.log(error);
+      navigate("/login");
+    
+    });
+
+    cookies.set('Id', "none", { path: '/' });
+    cookies.set('Email', "none", { path: '/' });
+    cookies.set('Username', "none", { path: '/' });
+    cookies.set('PhotoUrl', "none", { path: '/' });
+
   };
 
   return (
@@ -86,10 +61,9 @@ const Navbar = ({ onItemClick }) => {
     >
       <Menu.Item key="Profile" onClick={() => handleItemClick('Profile')} icon={<img style={{ width: '3.0vw', objectFit: "cover", }} src={PriflePhoto} />} />
       <Menu.Item key="Message" onClick={() => handleItemClick('DashPeople')} icon={<Link to={"/homepage"}><MessageOutlined style={{ color: "white" }} /></Link>} />
-      <Menu.Item key="Calls" icon={<PhoneOutlined style={{ color: "white" }} />} />
-      <Menu.Item key="Groups" icon={<UsergroupAddOutlined style={{ color: "white" }} />} />
+      
       <Menu.Item key="Settings" icon={<Link to={"/settings"}><SettingOutlined style={{ color: "white" }} /></Link>} />
-      <Menu.Item key="Exit" icon={<LoginOutlined style={{ color: "white" }} />} />
+      <Menu.Item key="Exit" onClick={onClick} icon={<LoginOutlined style={{ color: "white" }} />} />
     </Menu>
   );
 };

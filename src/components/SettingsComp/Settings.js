@@ -1,20 +1,36 @@
 import React from "react";
 import { Button, Flex } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import { LockOutlined } from "@ant-design/icons";
-import { MailOutlined } from "@ant-design/icons";
-import { BellOutlined } from "@ant-design/icons";
-import { FileOutlined } from "@ant-design/icons";
-import { UsergroupAddOutlined } from "@ant-design/icons";
-import { StarOutlined } from "@ant-design/icons";
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import { InboxOutlined,UploadOutlined } from '@ant-design/icons';
 import Navbar from "../homepage/navbar";
 import { Space } from "antd";
+import { message, Upload } from 'antd';
 import { Col, Row } from "antd";
 import { Input } from "antd";
 import { Switch } from "antd";
 import { Typography } from "antd";
 const { Title } = Typography;
+const { Dragger } = Upload;
+
+const props = {
+  name: 'file',
+  multiple: true,
+  action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+  onChange(info) {
+    const { status } = info.file;
+    if (status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+  onDrop(e) {
+    console.log('Dropped files', e.dataTransfer.files);
+  },
+};
+
 const onChange = (checked) => {
   console.log(`switch to ${checked}`);
 };
@@ -27,18 +43,18 @@ const AccountButton = () => (
 
         </Col>
         <Col span={17} style={{ display: "flex" }}>
-          <div style={{display:"block",justifyContent:"center",alignItems:"center"}}>
-            <Title style={{display:"flex",justifyContent:"center",color:"#6e00ff"}}>SETTINGS</Title>
+          <div style={{ display: "block", justifyContent: "center", alignItems: "center" }}>
+            <Title style={{ display: "flex", justifyContent: "center", color: "#6e00ff" }}>SETTINGS</Title>
             <div
               style={{
                 background: "white",
                 justifyContent: "center",
                 textAlign: "center",
                 fontSize: "1vw",
-               padding:"10vw",
+                padding: "8vw",
                 borderRadius: "4vh",
-                
-                marginBottom: "25vw"
+
+                marginBottom: "20vw"
 
 
               }}
@@ -61,7 +77,13 @@ const AccountButton = () => (
                 </Button>
               </div>
 
+              <div>
+              <Upload {...props}>
+       <Button icon={<UploadOutlined />}>Click to Upload</Button>
+           </Upload>
+              </div>
             </div>
+
           </div>
 
         </Col>

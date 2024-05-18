@@ -7,14 +7,16 @@ import FormItem from 'antd/es/form/FormItem';
 import { Typography } from 'antd';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import Password from 'antd/es/input/Password';
+
 //import Cookies from 'js-cookie';
 import Cookies from 'universal-cookie';
+import { useNavigate } from "react-router-dom";
 const { Title } = Typography;
 
 const Login = () => {
-
+  const navigate = useNavigate();
   const onFinish = (values) => {
+
     console.log('Received values of form: ', values);
 
     const cookies = new Cookies();
@@ -29,11 +31,16 @@ const Login = () => {
 
     axios.post('http://localhost:5016/api/baytech/SignIn',customReq)
     .then(function (response) {
-      cookies.set('Id', response.data.id, { path: '/' });
-      cookies.set('Email', response.data.email, { path: '/' });
-      cookies.set('Username', response.data.userName, { path: '/' });
-      cookies.set('PhotoUrl', response.data.photoUrl, { path: '/' });
-      console.log(response)
+      if(response.status==200)
+        {
+          cookies.set('Id', response.data.id, { path: '/' });
+          cookies.set('Email', response.data.email, { path: '/' });
+          cookies.set('Username', response.data.userName, { path: '/' });
+          cookies.set('PhotoUrl', response.data.photoUrl, { path: '/' });
+          cookies.set('IsOnline', "online", { path: '/' });
+          navigate("/homepage");
+        }
+
     })
     .catch(function (error) {
       console.log(error);

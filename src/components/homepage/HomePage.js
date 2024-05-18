@@ -18,6 +18,7 @@ const HomePage = () => {
   const [activeComponent, setActiveComponent] = useState('DashPeople');
   const [name, setName] = useState([]);
   const [email, setEmail] = useState([]);
+  const [isOnline, setisOnline] = useState([]);
   const [profile, setProfile] = useState([]);
   const handleNavbarItemClick = (key) => {
     setActiveComponent(key);
@@ -29,6 +30,7 @@ const HomePage = () => {
   const handleDashPeopleSelection = (value, value2) => {
     setName(value2.value)
     setEmail(value2.label)
+    setisOnline(value2.isOnline)
     setActiveComponent('Profile');
     
   };
@@ -39,7 +41,7 @@ const HomePage = () => {
       <Col span={2} style={{}}><Navbar onItemClick={handleNavbarItemClick} /></Col>
 
       <Col span={10} style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
-          {activeComponent === 'Profile' && <Profile name={name} email={email} />}
+          {activeComponent === 'Profile' && <Profile name={name} email={email} isOnline={isOnline} />}
           {activeComponent === 'DashPeople' && <DashPeople onSelection={handleDashPeopleSelection} />}
       </Col>
       

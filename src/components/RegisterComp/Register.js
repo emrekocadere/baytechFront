@@ -1,15 +1,18 @@
 import React from 'react';
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Flex, Form, Input } from 'antd';
+import { Button, Checkbox, Flex, Form, Input,message } from 'antd';
 import res from "../../resim1.png"
 import { Col, Row } from 'antd';
 import "./style.css";
 import { Typography } from 'antd';
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 const { Title } = Typography;
 
 const Register = () => {
+    const navigate = useNavigate();
     const onFinish = (values) => {
         
         console.log('Received values of form: ', values);
@@ -19,20 +22,29 @@ const Register = () => {
     let customResponse={
         Firstname:values.FirstName,
         Lastname:values.LastName,
-        PhoneNumber:"7878",
+    PhoneNumber:"7878",
       Username:values.UserName,
       Email:values.Email,
       Password:values.password
     }
-    console.log("parametrelim")
-    console.log(customResponse)
+
+
+
 
     axios.post('http://localhost:5016/api/baytech/SignUp',customResponse)
     .then(function (response) {
-      console.log(response);
+        const cookies = new Cookies();
+        if(response.status==200)
+            {
+              cookies.set('Id', response.data.id, { path: '/' });
+              cookies.set('Email', response.data.email, { path: '/' });
+              cookies.set('Username', response.data.userName, { path: '/' });
+              cookies.set('PhotoUrl', response.data.photoUrl, { path: '/' });
+              navigate("/homepage");
+            }
     })
     .catch(function (error) {
-      console.log(error);
+        message.error("Username or password is incorrect!");
     });
 
 
