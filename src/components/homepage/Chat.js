@@ -208,7 +208,7 @@ const Chat = () => {
             
             </div >
           </div>
-          <Button  type="text" onClick={{}}><Avatar  src={res5}></Avatar></Button>
+          <Button  type="text" onClick={onFinishh}><Avatar  src={res5}></Avatar></Button>
         </div>
 
         {/* Mesajlar margintop, background, maxwidth*/}

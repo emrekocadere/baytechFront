@@ -8,8 +8,11 @@ import { Col, Row } from "antd";
 import { Input } from "antd";
 import { Switch } from "antd";
 import { Typography } from "antd";
+import axios from 'axios';
+import Cookies from 'universal-cookie';
 const { Title } = Typography;
 const { Dragger } = Upload;
+
 
 const props = {
   name: 'file',
@@ -33,6 +36,26 @@ const props = {
 
 const onChange = (checked) => {
   console.log(`switch to ${checked}`);
+};
+
+const ChangeUsername = (event) => {
+  const cookies = new Cookies();
+  const newUsername = event.target.value;
+  let customReq={
+    Id: cookies.get('Id'),   
+    Username:newUsername
+  };
+
+  axios.post('http://localhost:5016/api/baytech/ChangeName',customReq)
+  .then(function (response) {
+
+  })
+  .catch(function (error) {
+    console.log(error);
+    message.error("Username or password is incorrect!");
+  });
+  
+  
 };
 const AccountButton = () => (
   <>
@@ -71,10 +94,10 @@ const AccountButton = () => (
                 <Switch defaultChecked onChange={onChange} />
               </div>
               <div style={{ paddingBottom: "1vh", marginTop: "4vh" }}>
-                İsim değiştirme <Input style={{ width: "15vw" }} placeholder="Yeni Ad" />
-                <Button type="primary" ghost>
+                İsim değiştirme <Input style={{ width: "15vw" }} placeholder="Yeni Ad" onPressEnter={ChangeUsername} />
+                {/* <Button type="primary" ghost >
                   Değiştir
-                </Button>
+                </Button> */}
               </div>
 
               <div>

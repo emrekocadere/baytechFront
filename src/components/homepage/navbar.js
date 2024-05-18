@@ -13,8 +13,16 @@ const Navbar = ({ onItemClick }) => {
   const [openKeys, setOpenKeys] = useState(['sub1']);
   const navigate = useNavigate();
 
+  // const handleItemClick = (key) => {
+  //   onItemClick(key);
+  // };
+
   const handleItemClick = (key) => {
-    onItemClick(key);
+    if (typeof onItemClick === 'function') {
+      onItemClick(key);
+    } else {
+      console.error("onItemClick bir fonksiyon değil");
+    }
   };
 
 
@@ -62,7 +70,7 @@ const Navbar = ({ onItemClick }) => {
       <Menu.Item key="Profile" onClick={() => handleItemClick('Profile')} icon={<img style={{ width: '3.0vw', objectFit: "cover", }} src={PriflePhoto} />} />
       <Menu.Item key="Message" onClick={() => handleItemClick('DashPeople')} icon={<Link to={"/homepage"}><MessageOutlined style={{ color: "white" }} /></Link>} />
       
-      <Menu.Item key="Settings" icon={<Link to={"/settings"}><SettingOutlined style={{ color: "white" }} /></Link>} />
+      <Menu.Item key="Settings" onClick={() => handleItemClick('Settings')} icon={<Link to={"/settings"}><SettingOutlined style={{ color: "white" }} /></Link>} />
       <Menu.Item key="Exit" onClick={onClick} icon={<LoginOutlined style={{ color: "white" }} />} />
     </Menu>
   );
