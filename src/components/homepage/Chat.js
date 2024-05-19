@@ -22,7 +22,7 @@ const Chat = () => {
   const [chatroom, setChatroom] = useState();
 
   const [inputValue, setInputValue] = useState('');
-
+  const [geminiTitle, setgeminiTitle] = useState('AI by Gemini');
   const messagesContainerRef = useRef(null);
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
@@ -42,13 +42,14 @@ const Chat = () => {
     setIsModalOpen(true);
   };
   const handleOk = () => {
+    setgeminiResponse("");
     setIsModalOpen(false);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
-  const onFinishh = (values) => {
+  const emotionGemini = (values) => {
 
     let str;
     messages.forEach(obj => {
@@ -64,7 +65,7 @@ const Chat = () => {
       .then(function (response) {
 
         setgeminiResponse(response.data.candidates[0].content.parts[0].text);
-        showModal();
+
       })
       .catch(function (error) {
         console.log(error);
@@ -73,92 +74,90 @@ const Chat = () => {
   };
 
 
-  const connectToChatHub = (username) => {
-    const newConnection = new signalR.HubConnectionBuilder()
-        .withUrl(`http://localhost:5016/chathub?username=${encodeURIComponent(username)}`)
+  const messageAdvice = (values) => {
+
+    let str;
+    messages.forEach(obj => {
+      str = str += obj.message.toString();
+    });
+    let geminiReq = {
+      message: str + " bu mesajları dikkate alarak mesajlara nasıl bir cevap yazabilirm"
+
+    }
+
+
+    axios.post('http://localhost:5016/api/baytech/Gemini', geminiReq)
+      .then(function (response) {
+
+        setgeminiResponse(response.data.candidates[0].content.parts[0].text);
+
+      })
+      .catch(function (error) {
+        console.log(error);
+        message.error("Username or password is incorrect!");
+      });
+  };
+
+
+
+
+
+  const joinRoom = async (user, room) => {
+    try {
+      const connection = new HubConnectionBuilder()
+        .withUrl("http://localhost:5016/chat")
+        .configureLogging(LogLevel.Information)
         .build();
 
-    newConnection.on("ReceiveMessage", (user, message) => {
-        console.log(`Yeni mesaj alındı: ${message} (Gönderen: ${user})`);
-    });
 
-    newConnection.start().then(() => {
-        console.log("SignalR bağlantısı başarılı");
-        setConnection(newConnection); // bağlantıyı state'e atıyoruz
-    }).catch((err) => {
-        console.error("SignalR bağlantısı başlatılırken hata oluştu:", err.toString());
-    });
-}
+      connection.on("ReceiveMessage", (user, message) => {
+        setMessages(messages => [...messages, { user, message }]);
 
-  const sendMessage = (user, message) => {
-    if (connection) { // connection state'i tanımlıysa
-        connection.invoke("SendMessage", user, message)
-            .catch((err) => {
-                console.error("Mesaj gönderilirken hata oluştu:", err.toString());
-            });
-    } else {
-        console.error("Bağlantı henüz kurulmadı.");
+        //gelen mesajlar
+
+      });
+
+      connection.on("UsersInRoom", (users) => {
+        setUsers(users);
+      });
+
+      connection.onclose(e => {
+        setConnection();
+        setMessages([]);
+        setUsers([]);
+      });
+
+      await connection.start();
+      await connection.invoke("JoinRoom", { user, room });
+      await setConnection(connection);
+
+
+
+    } catch (e) {
+      console.log(e);
     }
-}
+  }
 
+  const sendMessage = async (mesajj) => {
+    try {
+      if (connection) { // connection değişkeni tanımlıysa işlemi gerçekleştir
 
+        await connection.invoke("SendMessage", mesajj);
+      } else {
+        console.log("Bağlantı henüz kurulmadı.");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-  // const joinRoom = async (user, room) => {
-  //   try {
-  //     const connection = new HubConnectionBuilder()
-  //       .withUrl("http://localhost:5016/chat")
-  //       .configureLogging(LogLevel.Information)
-  //       .build();
-
-
-  //     connection.on("ReceiveMessage", (user, message) => {
-  //       setMessages(messages => [...messages, { user, message }]);
-
-  //       //gelen mesajlar
-
-  //     });
-
-  //     connection.on("UsersInRoom", (users) => {
-  //       setUsers(users);
-  //     });
-
-  //     connection.onclose(e => {
-  //       setConnection();
-  //       setMessages([]);
-  //       setUsers([]);
-  //     });
-
-  //     await connection.start();
-  //     await connection.invoke("JoinRoom", { user, room });
-  //     await setConnection(connection);
-
-
-
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
-
-  // const sendMessage = async (mesajj) => {
-  //   try {
-  //     if (connection) { // connection değişkeni tanımlıysa işlemi gerçekleştir
-
-  //       await connection.invoke("SendMessage", mesajj);
-  //     } else {
-  //       console.log("Bağlantı henüz kurulmadı.");
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
-
-  // const closeConnection = async () => {
-  //   try {
-  //     await connection.stop();
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
+  const closeConnection = async () => {
+    try {
+      await connection.stop();
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
 
   const handleInputChange = (text) => {
@@ -171,10 +170,12 @@ const Chat = () => {
       //setMesaj([...mesaj, text]);
       setInputValue('');
       //onFinish({ mesaj: text }); // onFinish fonksiyonunu çağırarak değeri iletebilirsin.
-      sendMessage(Cookies.get("Username"),text)
+      sendMessage(text)
 
     }
   };
+
+
 
 
   const onFinish = (values) => {
@@ -183,12 +184,12 @@ const Chat = () => {
 
   };
 
-  // useEffect(() => {
-  //   messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-  // }, [messages]);
+  useEffect(() => {
+    messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+  }, [messages]);
 
   useEffect(() => {
-    connectToChatHub(Cookies.get("Username"));
+    joinRoom(Cookies.get("Username"), "44");
     console.log("use effect")
   }, []);
 
@@ -200,15 +201,15 @@ const Chat = () => {
           background: '#fff', padding: '2vh', display: 'flex',
           justifyContent: 'space-between', alignItems: 'center'
         }}>
-          <div style={{ display: 'flex',  justifyContent:"space-around"}}>
+          <div style={{ display: 'flex', justifyContent: "space-around" }}>
             <Avatar src={<img src={url} alt="avatar" />} />
             <div style={{ marginLeft: '10px', display: 'flex', flexDirection: 'column' }}>
               <a>anıl</a>
               <a>dsfcdsf@gmail.com</a>
-            
+
             </div >
           </div>
-          <Button  type="text" onClick={onFinishh}><Avatar  src={res5}></Avatar></Button>
+          <Button type="text" onClick={showModal}><Avatar src={res5}></Avatar></Button>
         </div>
 
         {/* Mesajlar margintop, background, maxwidth*/}
@@ -239,11 +240,20 @@ const Chat = () => {
                 prefix={<Button type='text'><PaperClipOutlined /></Button>}
                 suffix={
                   <div>
-                    <Button type='text' onClick={onFinishh}><CameraOutlined /></Button>
 
 
-                    <Modal title={geminiResponse} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                      {geminiResponse}
+
+                    <Modal title={geminiTitle} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                      <div>
+
+                        <div>
+                          {geminiResponse}
+                        </div>
+
+                        <Button onClick={emotionGemini}>konu</Button>
+                        <Button onClick={messageAdvice}>mesaj</Button>
+                      </div>
+
                     </Modal>
 
                     <Button type='text'><AudioOutlined /></Button>
