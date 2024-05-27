@@ -26,8 +26,6 @@ const Chat = () => {
   const messagesContainerRef = useRef(null);
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
-
-
   const [users, setUsers] = useState([]);
 
 
