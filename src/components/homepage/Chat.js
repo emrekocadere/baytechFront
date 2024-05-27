@@ -19,14 +19,14 @@ const url = 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg
 const Chat = () => {
 
 
-  const [chatroom, setChatroom] = useState();
+  //const [chatroom, setChatroom] = useState();
 
   const [inputValue, setInputValue] = useState('');
   const [geminiTitle, setgeminiTitle] = useState('AI by Gemini');
   const messagesContainerRef = useRef(null);
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
-  //const [mesaj, setMesaj] = useState([]);
+
 
   const [users, setUsers] = useState([]);
 
@@ -56,7 +56,7 @@ const Chat = () => {
       str = str += obj.message.toString();
     });
     let geminiReq = {
-      message: str + " bu mesajların duygu yoğunluğu nedir?"
+      message: str + " What is the emotional intensity of these messages?"
 
     }
 
@@ -81,7 +81,7 @@ const Chat = () => {
       str = str += obj.message.toString();
     });
     let geminiReq = {
-      message: str + " bu mesajları dikkate alarak mesajlara nasıl bir cevap yazabilirm"
+      message: str + "How can I reply to messages, taking these messages into consideration?"
 
     }
 
@@ -98,7 +98,7 @@ const Chat = () => {
       });
   };
 
-
+//- siganlR -- siganlR -- siganlR -
 
 
 
@@ -110,10 +110,11 @@ const Chat = () => {
         .build();
 
 
+
       connection.on("ReceiveMessage", (user, message) => {
         setMessages(messages => [...messages, { user, message }]);
 
-        //gelen mesajlar
+        
 
       });
 
@@ -138,13 +139,13 @@ const Chat = () => {
     }
   }
 
-  const sendMessage = async (mesajj) => {
+  const sendMessage = async (message) => {
     try {
-      if (connection) { // connection değişkeni tanımlıysa işlemi gerçekleştir
+      if (connection) { 
 
-        await connection.invoke("SendMessage", mesajj);
+        await connection.invoke("SendMessage", message);
       } else {
-        console.log("Bağlantı henüz kurulmadı.");
+        console.log("The connection has not been established yet.");
       }
     } catch (e) {
       console.log(e);
@@ -167,9 +168,7 @@ const Chat = () => {
 
   const handleOnEnter = (text) => {
     if (text.trim() !== '') {
-      //setMesaj([...mesaj, text]);
       setInputValue('');
-      //onFinish({ mesaj: text }); // onFinish fonksiyonunu çağırarak değeri iletebilirsin.
       sendMessage(text)
 
     }
@@ -204,8 +203,8 @@ const Chat = () => {
           <div style={{ display: 'flex', justifyContent: "space-around" }}>
             <Avatar src={<img src={url} alt="avatar" />} />
             <div style={{ marginLeft: '10px', display: 'flex', flexDirection: 'column' }}>
-              <a>anıl</a>
-              <a>dsfcdsf@gmail.com</a>
+              <a>name</a>
+              <a>Email</a>
 
             </div >
           </div>
