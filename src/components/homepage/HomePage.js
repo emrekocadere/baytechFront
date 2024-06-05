@@ -20,6 +20,9 @@ const HomePage = () => {
   const [email, setEmail] = useState([]);
   const [isOnline, setisOnline] = useState([]);
   const [profile, setProfile] = useState([]);
+
+  const [selectedUser, setselectedUser] = useState([]);
+
   const handleNavbarItemClick = (key) => {
     setActiveComponent(key);
     const cookies = new Cookies();
@@ -35,6 +38,12 @@ const HomePage = () => {
     
   };
 
+  const SelectedUser = (value2) => {
+    setselectedUser(value2);
+    console.log(value2)
+    
+  };
+
   return (
     <div style={{background: "#eef6fb",height:"100vh"}}>
     <Row>
@@ -42,10 +51,10 @@ const HomePage = () => {
 
       <Col span={10} style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
           {activeComponent === 'Profile' && <Profile name={name} email={email} isOnline={isOnline} />}
-          {activeComponent === 'DashPeople' && <DashPeople onSelection={handleDashPeopleSelection} />}
+          {activeComponent === 'DashPeople' && <DashPeople onSelection={handleDashPeopleSelection} SelectedUserProp={SelectedUser} />}
       </Col>
       
-      <Col span={12} ><Chat></Chat></Col>
+      <Col span={12} ><Chat selectedUserProp={selectedUser} ></Chat></Col>
     </Row>
     </div>
   );

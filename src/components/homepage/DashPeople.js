@@ -11,11 +11,11 @@ const { Search } = Input;
 const fakeDataUrl =
   'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo';// rup içinde bir url
 const ContainerHeight = 400;
-const DashPeople = ({ onSelection }) => {
+const DashPeople = ({ onSelection,SelectedUserProp }) => {
   const cookies = new Cookies();
   const [friendsData, setFriendsData] = useState([]);
   const [groupsData, setGroupsData] = useState([]);
-  const [userId, setUserId] = useState([]);
+  //const [SelectedUser, setSelectedUser] = useState([]);
 
 
   const [data, setData] = useState([]);
@@ -55,7 +55,11 @@ const DashPeople = ({ onSelection }) => {
  
 
 
+  const setSelectedUserClick = (newValue) => {
+    console.log(newValue)
+    SelectedUserProp(newValue)
 
+  };
   const handleChange = (newValue) => {
     setValue(newValue);
 
@@ -121,7 +125,7 @@ const DashPeople = ({ onSelection }) => {
       <div>
         <div style={{}}>
           <List style={{ padding: "1.2vw", background: "white", borderRadius: "2vw" }} >
-            <h3>Chats</h3>
+            <h3>Friends</h3>
             <VirtualList
               data={friendsData}
               height="13vw"
@@ -129,7 +133,8 @@ const DashPeople = ({ onSelection }) => {
               itemKey="Id"
             >
               {(item) => (
-                <Button type="text" style={{ height: "4vw" }}>
+                
+                <Button type="text" style={{ height: "4vw" }} onClick={() => setSelectedUserClick(item.userName)}>
                   <List.Item key={item.Id} >
                     <List.Item.Meta
                       avatar={<Avatar src={item.picture} />}

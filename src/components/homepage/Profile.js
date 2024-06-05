@@ -2,9 +2,10 @@ import React from 'react';
 import { Avatar, Flex, Space } from 'antd'
 import { Divider } from 'antd';
 import res5 from "../../profileImages/Aang.png"
-import Cookies from 'universal-cookie';
+import Cookies from 'js-cookie';
 import { Typography } from 'antd';
 import { Button,Badge } from "antd";
+import axios from 'axios';
 const { Text, Link } = Typography;
 
 const url = 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg';
@@ -13,9 +14,23 @@ const url = 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg
 
 
 const Profile = (props) => {
+  
+const AddFirend=()=>{
+    let req={
+        ClientUserId: Cookies.get("Id"),
+        TargetUserId:props.name
+    }
+    axios.post('http://localhost:5016/api/baytech/AddNatifications', req)
+    .then(function (response) {
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error);
 
+    });
+}
 
-    const cookies = new Cookies();
+    
     return (
         <div style={{ display: "inline-block", background: "white", border: "1vh solid white", borderRadius: "5vh", width: "30vw", height: "94vh" }}>
 
@@ -40,7 +55,7 @@ const Profile = (props) => {
             <Divider></Divider>
 
             <div style={{display:"flex", justifyContent:"space-around"}}>
-            <Button type="primary">Arkadaş Ekle</Button>
+            <Button type="primary" onClick={AddFirend}>Arkadaş Ekle</Button>
             <Button type="primary">Mesaj At</Button>
             </div>
 
