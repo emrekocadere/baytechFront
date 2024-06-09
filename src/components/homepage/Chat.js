@@ -20,6 +20,7 @@ const Chat = (props) => {
   const [connection, setConnection] = useState(null);
   const [messages, setMessages] = useState([]);
   const [GeminiMessage, setGeminiMessage] = useState([]);
+  const [username, setUsername] = useState([]);
 
 
   const request = {
@@ -242,6 +243,7 @@ const Chat = (props) => {
 
   useEffect(() => {
     getMessages(Cookies.get("Username"),props.selectedUserProp)
+    setUsername(Cookies.get("Username"))
   }, [props.selectedUserProp]);
 
   return (
@@ -261,7 +263,7 @@ const Chat = (props) => {
           </div>
           <Button type="text" onClick={showModal}><Avatar src={res5}></Avatar></Button>
         </div>
-        <div style={{ marginTop: '15px', marginBottom: '0px', overflowY: 'auto', maxHeight: '75vh' }} ref={messagesContainerRef}>
+        <div style={{ marginTop: '15px', marginBottom: '0px', overflowY: 'auto', maxHeight: '73vh' }} ref={messagesContainerRef}>
           {messages.map((messages, index) => (
             <div key={index} style={{
               marginBottom: '10px', padding: '10px', border: '1px solid #eee', borderRadius: '5px', maxWidth: '35%',
@@ -282,7 +284,7 @@ const Chat = (props) => {
                 onChange={(e) => handleInputChange(e.target.value)}
                 onPressEnter={() => handleOnEnter(inputValue)}
                 style={{ width: '100%', maxHeight: "12vh" }}
-                prefix={<Button type='text'><PaperClipOutlined /></Button>}
+                //prefix={<Button type='text'><PaperClipOutlined /></Button>}
                 suffix={
                   <div>
                     <Modal title={geminiTitle} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
@@ -294,7 +296,7 @@ const Chat = (props) => {
                         <Button onClick={messageAdvice}>mesaj</Button>
                       </div>
                     </Modal>
-                    <Button type='text'><AudioOutlined /></Button>
+                    {/* <Button type='text'><AudioOutlined /></Button> */}
                     <InputEmoji
                       value={inputValue}
                       onChange={handleInputChange}
