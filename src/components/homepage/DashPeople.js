@@ -30,6 +30,13 @@ const DashPeople = ({ onSelection,SelectedUserProp }) => {
     axios.post('http://localhost:5016/api/baytech/ReturnFriends', request)
       .then(function (response) {
         console.log(response.data)
+        let gemini={
+          userName:"Gemini"
+         }
+        // response.data.ush(gemini)
+        if (Array.isArray(response.data)) {
+          response.data.push(gemini); // 'push' metodunu küçük harflerle kullanın
+        }
         setFriendsData(response.data)
       })
       .catch(function (error) {
@@ -37,20 +44,19 @@ const DashPeople = ({ onSelection,SelectedUserProp }) => {
         message.error("Username or password is incorrect!");
       });
 
-    axios.post('http://localhost:5016/api/baytech/ReturnGroups', request)
-      .then(function (response) {
+    // axios.post('http://localhost:5016/api/baytech/ReturnGroups', request)
+    //   .then(function (response) {
 
-        setGroupsData(response.data)
-      })
-      .catch(function (error) {
-        console.log(error);
-        message.error("Username or password is incorrect!");
-      });
+    //     setGroupsData(response.data)
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //     message.error("Username or password is incorrect!");
+    //   });
 
 
   }, []);
 
- 
 
  
 
@@ -161,7 +167,7 @@ const DashPeople = ({ onSelection,SelectedUserProp }) => {
       {/* Altta liste */}
       <div>
         <div style={{}}>
-          <List style={{ padding: "1.2vw", background: "white", borderRadius: "2vw" }} >
+          {/* <List style={{ padding: "1.2vw", background: "white", borderRadius: "2vw" }} >
             <h3>Groups</h3>
             <VirtualList
               data={groupsData}
@@ -181,7 +187,7 @@ const DashPeople = ({ onSelection,SelectedUserProp }) => {
                 </Button>
               )}
             </VirtualList>
-          </List>
+          </List> */}
         </div>
       </div>
 

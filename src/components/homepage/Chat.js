@@ -19,7 +19,7 @@ const Chat = (props) => {
   const messagesContainerRef = useRef(null);
   const [connection, setConnection] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [GeminiMessage, setGeminiMessage] = useState([]);
 
 
   const request = {
@@ -59,10 +59,34 @@ const Chat = (props) => {
       });
   };
 
+
+
+  const SendMessageToGemini = (values) => {
+    // let str = "";
+    // messages.forEach(obj => {
+    //   str += obj.messages.toString();
+    // });
+    let geminiReq = {
+      message: values,
+      Username:Cookies.get("Username")
+    }
+
+    axios.post('http://localhost:5016/api/baytech/PrivateGemini', geminiReq)
+      .then(function (response) {
+        setgeminiResponse(response.data.candidates[0].content.parts[0].text);
+        getMessages(Cookies.get("Username"),"Gemini")
+      })
+      .catch(function (error) {
+        console.log(error);
+        message.error("Username or password is incorrect!");
+      });
+  };
+
+
   const emotionGemini = (values) => {
     let str = "";
     messages.forEach(obj => {
-      str += obj.message.toString();
+      str += obj.messages.toString();
     });
     let geminiReq = {
       message: str + " What is the emotional intensity of these messages?"
@@ -118,7 +142,7 @@ const Chat = (props) => {
       conn.onclose(e => {
         setConnection(null);
         setMessages([]);
-        setUsers([]);
+       // setUsers([]);
       });
 
       await conn.start();
@@ -197,7 +221,14 @@ const Chat = (props) => {
   const handleOnEnter = (text) => {
     if (text.trim() !== '') {
       setInputValue('');
-      sendMessage(props.selectedUserProp,text);
+      if(props.selectedUserProp=="Gemini")
+        {
+          SendMessageToGemini(text)
+        }
+        else{
+          sendMessage(props.selectedUserProp,text);
+        }
+
     }
   };
 
