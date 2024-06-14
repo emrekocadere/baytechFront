@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppstoreOutlined, MailOutlined, SettingOutlined, MessageOutlined, PhoneOutlined, UsergroupAddOutlined, LoginOutlined } from '@ant-design/icons';
 import PriflePhoto from "../SidebarComp/ellipse-1.png"
 import { Button, Menu } from 'antd';
@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 const Navbar = ({ onItemClick }) => {
 
   const [openKeys, setOpenKeys] = useState(['sub1']);
+
   const navigate = useNavigate();
 
   // const handleItemClick = (key) => {
@@ -24,6 +25,9 @@ const Navbar = ({ onItemClick }) => {
       console.error("onItemClick bir fonksiyon değil");
     }
   };
+
+
+  
 
 
   const onClick = () => {
@@ -70,7 +74,7 @@ const Navbar = ({ onItemClick }) => {
       <Menu.Item key="Profile" onClick={() => handleItemClick('Profile')} icon={<img style={{ width: '3.0vw', objectFit: "cover", }} src={PriflePhoto} />} />
       <Menu.Item key="Message" onClick={() => handleItemClick('DashPeople')} icon={<Link to={"/homepage"}><MessageOutlined style={{ color: "white" }} /></Link>} />
       
-      <Menu.Item key="Settings" onClick={() => handleItemClick('Settings')} icon={<Link to={"/settings"}><SettingOutlined style={{ color: "white" }} /></Link>} />
+      {/* <Menu.Item key="Settings" onClick={() => handleItemClick('Settings')} icon={<Link to={"/settings"}><SettingOutlined style={{ color: "white" }} /></Link>} /> */}
       <Menu.Item key="Exit" onClick={onClick} icon={<LoginOutlined style={{ color: "white" }} />} />
     </Menu>
   );

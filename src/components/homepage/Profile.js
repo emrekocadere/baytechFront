@@ -13,21 +13,11 @@ const url = 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg
 
 
 
-const Profile = (props) => {
+const Profile = ({name,email,isOnline,IsSend,AddFriendNotify,username,abc}) => {
   
 const AddFirend=()=>{
-    let req={
-        ClientUserId: Cookies.get("Id"),
-        TargetUserId:props.name
-    }
-    axios.post('http://localhost:5016/api/baytech/AddNatifications', req)
-    .then(function (response) {
-      console.log(response)
-    })
-    .catch(function (error) {
-      console.log(error);
 
-    });
+    AddFriendNotify(username,abc);
 }
 
     
@@ -38,7 +28,7 @@ const AddFirend=()=>{
                 <Avatar src={res5} style={{ height: "20vh", width: "10vw" }} />
 
                 {(() => {
-                      switch (props.isOnline) {
+                      switch (isOnline) {
                         case true: return <div><Badge status="success" text="Online" /></div>;
                         case false: return <div><Badge status="error" text="Ofline" /></div>;
                    
@@ -47,16 +37,16 @@ const AddFirend=()=>{
 
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
-                <Text strong>{props.name}</Text>
-                <Text strong>{props.email}</Text>
+                <Text strong>{name}</Text>
+                {/* <Text strong>{email}</Text> */}
             </div>
 
 
             <Divider></Divider>
 
             <div style={{display:"flex", justifyContent:"space-around"}}>
-            <Button type="primary" onClick={AddFirend}>Arkadaş Ekle</Button>
-            <Button type="primary">Mesaj At</Button>
+            <Button type="primary" onClick={AddFirend}>Add Friend</Button>
+           
             </div>
 
 
@@ -64,13 +54,7 @@ const AddFirend=()=>{
             <Divider></Divider>
 
 
-            <div style={{ display: "flex", flexDirection: "column", height: "27vh" }}>
-                <h3>Common Groups</h3>
 
-                <Avatar src={<img src={url} alt="avatar" />} />
-                <Avatar src={<img src={url} alt="avatar" />} />
-                <Avatar src={<img src={url} alt="avatar" />} />
-            </div>
         </div>
     );
 

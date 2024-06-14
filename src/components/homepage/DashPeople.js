@@ -7,14 +7,16 @@ import axios from 'axios';
 import { Badge } from 'antd';
 import Cookies from 'universal-cookie';
 import { Select } from 'antd';
+import gemi from "../../profileImages/Gemini.jpeg"
 const { Search } = Input;
 const fakeDataUrl =
   'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo';// rup içinde bir url
 const ContainerHeight = 400;
-const DashPeople = ({ onSelection,SelectedUserProp }) => {
+const DashPeople = ({ onSelection,SelectedUserProp,SelectedAbcProp,AddFriendNotify }) => {
   const cookies = new Cookies();
   const [friendsData, setFriendsData] = useState([]);
   const [groupsData, setGroupsData] = useState([]);
+  const [abc, setAbc] = useState([]);
   //const [SelectedUser, setSelectedUser] = useState([]);
 
 
@@ -34,9 +36,7 @@ const DashPeople = ({ onSelection,SelectedUserProp }) => {
           userName:"Gemini"
          }
         // response.data.ush(gemini)
-        if (Array.isArray(response.data)) {
-          response.data.push(gemini); // 'push' metodunu küçük harflerle kullanın
-        }
+
         setFriendsData(response.data)
       })
       .catch(function (error) {
@@ -66,10 +66,15 @@ const DashPeople = ({ onSelection,SelectedUserProp }) => {
     SelectedUserProp(newValue)
 
   };
+
+
+
+
   const handleChange = (newValue) => {
     setValue(newValue);
 
   };
+
   const handleSearch = (newValue) => {
     let request = {
       Search: newValue
@@ -95,6 +100,8 @@ const DashPeople = ({ onSelection,SelectedUserProp }) => {
   const handleOnSelected = (value, value2) => {
     console.log("value2",value2)
     onSelection(value, value2);
+    //setAbc(value2.label)
+    SelectedAbcProp(value2.label)
   }
 
 
@@ -131,6 +138,23 @@ const DashPeople = ({ onSelection,SelectedUserProp }) => {
       <div>
         <div style={{}}>
           <List style={{ padding: "1.2vw", background: "white", borderRadius: "2vw" }} >
+
+
+          <h3>Google Gemini</h3>
+          <Button type="text" style={{ height: "4vw",width:"25vw" }} onClick={() => setSelectedUserClick("Gemini")}>
+                  <List.Item  >
+                    <List.Item.Meta
+                      avatar={<Avatar src={gemi} />}
+                      title={"Gemini"}
+                      description={'By Google'}
+                    />
+ 
+
+                    
+                  </List.Item>
+                </Button>
+
+
             <h3>Friends</h3>
             <VirtualList
               data={friendsData}
@@ -147,19 +171,15 @@ const DashPeople = ({ onSelection,SelectedUserProp }) => {
                       title={<a href="https://ant.design">{item.userName}</a>}
                       description={item.email}
                     />
-                    {(() => {
-                      switch (item.isOnline) {
-                        case true: return <div><Badge status="success" text="Online" /></div>;
-                        case false: return <div><Badge status="error" text="Ofline" /></div>;
-                   
-                      }
-                    })()}
+ 
 
                     
                   </List.Item>
                 </Button>
               )}
             </VirtualList>
+
+            
           </List>
         </div>
       </div>

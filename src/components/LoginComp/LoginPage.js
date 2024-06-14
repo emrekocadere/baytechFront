@@ -1,7 +1,7 @@
 import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Flex, Form, Input } from 'antd';
-import res from "../../resim1.png"
+import res from "../../resim2.jpeg"
 import { Col, Row } from 'antd';
 import Login from './Login';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Flex, Form, Input,message } from 'antd';
-import res from "../../resim1.png"
+import res from "../../resim2.jpeg"
 import { Col, Row } from 'antd';
 import "./style.css";
 import { Typography } from 'antd';
@@ -16,9 +16,6 @@ const Register = () => {
     const onFinish = (values) => {
         
         console.log('Received values of form: ', values);
-
-    
-
     let customResponse={
         Firstname:values.FirstName,
         Lastname:values.LastName,
